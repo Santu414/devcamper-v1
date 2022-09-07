@@ -2,7 +2,6 @@ const ErrorResponse = require("../utils/errorResponse");
 const asyncHandler = require("../middleware/async");
 const geocode = require("../utils/geocoder");
 const Bootcamp = require("../models/Bootcamps");
-const { Query } = require("mongoose");
 
 //@desc      Get all bootcamps
 //@route     Get /api/v1/bootcamps
