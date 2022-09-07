@@ -5,8 +5,10 @@ const dotenv = require("dotenv");
 dotenv.config({ path: "./config.env" });
 
 const connectDB = async () => {
-  const conn = await mongoose.connect(process.env.MONGO_URI, {});
-  console.log(`MongoDB Connected: ${conn.connection.host}`);
+  const conn = await mongoose.connect(process.env.MONGO_URI, {
+    useUnifiedTopology: false,
+  });
+  console.log(`MongoDB Connected: ${conn.connection.host}`.cyan.underline.bold);
 };
 
 module.exports = connectDB;
