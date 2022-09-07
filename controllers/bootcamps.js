@@ -2,7 +2,6 @@ const ErrorResponse = require("../utils/errorResponse");
 const asyncHandler = require("../middleware/async");
 const geocode = require("../utils/geocoder");
 const Bootcamp = require("../models/Bootcamps");
-const { Query } = require("mongoose");
 
 //@desc      Get all bootcamps
 //@route     Get /api/v1/bootcamps
@@ -28,7 +27,7 @@ exports.getBootcamps = asyncHandler(async (req, res, next) => {
   );
 
   //Finding resource
-  query = Bootcamp.find(JSON.parse(queryStr));
+  query = Bootcamp.find(JSON.parse(queryStr)).populate("courses");
 
   //Select Fields
   if (req.query.select) {
@@ -138,7 +137,7 @@ exports.updateBootcamp = asyncHandler(async (req, res, next) => {
 //@route     DELETE /api/v1/bootcamps/:id
 //@access    Public
 exports.deleteBootcamp = asyncHandler(async (req, res, next) => {
-  const bootcamp = await Bootcamp.findByIdAndDelete(req.params.id, {
+  const bootcamp = await Bootcamp.findById(req.params.id, {
     new: true,
     runValidators: true,
   });
@@ -147,6 +146,9 @@ exports.deleteBootcamp = asyncHandler(async (req, res, next) => {
       new ErrorResponse(`Bootcamp not found with id of ${req.params.id}`, 404)
     );
   }
+
+  bootcamp.remove();
+
   res.status(200).json({ success: true, data: {} });
 });
 
